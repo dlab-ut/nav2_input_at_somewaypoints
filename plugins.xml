@@ -1,0 +1,5 @@
+<library path="input_at_somewaypoint">
+<class type="nav2_waypoint_follower::InputAtSomeWaypoint" base_class_type="nav2_core::WaypointTaskExecutor">
+    <description>Lets robot wait for input at waypoint arrival</description>
+</class>
+</library>
