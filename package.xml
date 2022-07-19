@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
-  <name>waypointplugin</name>
+  <name>nav2_input_at_somewaypoints</name>
   <version>0.0.0</version>
   <description>TODO: Package description</description>
   <maintainer email="yuri-r@roboken.cs.tsukuba.ac.jp">yuri-r</maintainer>

@@ -1,4 +1,4 @@
-#include "waypointplugin/input_at_somewaypoint.hpp"
+#include "nav2_input_at_somewaypoints/input_at_somewaypoint.hpp"
 
 #include <string>
 #include <exception>
