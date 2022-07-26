@@ -60,7 +60,7 @@ protected:
 
   bool input_received_;
   bool is_enabled_;
-  int index;
+  std::vector<int64_t> index;
   rclcpp::Logger logger_{rclcpp::get_logger("nav2_waypoint_follower")};
   rclcpp::Clock::SharedPtr clock_;
   std::mutex mutex_;

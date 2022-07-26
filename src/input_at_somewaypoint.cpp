@@ -14,8 +14,7 @@ using std::placeholders::_1;
 
 InputAtSomeWaypoint::InputAtSomeWaypoint()
 : input_received_(false),
-  is_enabled_(true),
-  index(0)
+  is_enabled_(true)
 {
 }
 
@@ -39,7 +38,7 @@ void InputAtSomeWaypoint::initialize(
   std::string input_topic;
   nav2_util::declare_parameter_if_not_declared(
     node, plugin_name + ".index",
-    rclcpp::ParameterValue(2));
+    rclcpp::ParameterValue(std::vector<int64_t>(1,0)));
   nav2_util::declare_parameter_if_not_declared(
     node, plugin_name + ".enabled",
     rclcpp::ParameterValue(true));
@@ -50,6 +49,7 @@ void InputAtSomeWaypoint::initialize(
   node->get_parameter(plugin_name + ".enabled", is_enabled_);
   node->get_parameter(plugin_name + ".input_topic", input_topic);
 
+  // RCLCPP_WARN(logger_, "stop first index %ld %ld.", index.at(0), index.at(1));
   RCLCPP_INFO(
     logger_, "InputAtSomeWaypoint: Subscribing to input topic %s.", input_topic.c_str());
   subscription_ = node->create_subscription<std_msgs::msg::Empty>(
@@ -74,7 +74,8 @@ bool InputAtSomeWaypoint::processAtWaypoint(
 
   rclcpp::Rate r(50);
   bool input_received = false;
-  if(curr_waypoint_index != index){
+  // if(true){
+  if(std::find(index.begin(), index.end(), curr_waypoint_index+1) == index.end()){
       return true;
   }
   while (true) {
