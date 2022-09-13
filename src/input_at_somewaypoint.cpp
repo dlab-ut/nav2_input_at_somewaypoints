@@ -50,16 +50,17 @@ void InputAtSomeWaypoint::initialize(
   node->get_parameter(plugin_name + ".input_topic", input_topic);
 
   // RCLCPP_WARN(logger_, "stop first index %ld %ld.", index.at(0), index.at(1));
-  RCLCPP_INFO(
-    logger_, "InputAtSomeWaypoint: Subscribing to input topic %s.", input_topic.c_str());
-  subscription_ = node->create_subscription<std_msgs::msg::Empty>(
+  RCLCPP_INFO(logger_, "InputAtSomeWaypoint: Subscribing to input topic %s.", input_topic.c_str());
+  subscription_ = node->create_subscription<std_msgs::msg::Bool>(
     input_topic, 1, std::bind(&InputAtSomeWaypoint::Cb, this, _1));
 }
 
-void InputAtSomeWaypoint::Cb(const std_msgs::msg::Empty::SharedPtr /*msg*/)
+void InputAtSomeWaypoint::Cb(const std_msgs::msg::Bool::SharedPtr msg)
 {
-  std::lock_guard<std::mutex> lock(mutex_);
-  input_received_ = true;
+  if(msg->data){
+    std::lock_guard<std::mutex> lock(mutex_);
+    input_received_ = true;
+  }
 }
 
 bool InputAtSomeWaypoint::processAtWaypoint(
@@ -91,8 +92,7 @@ bool InputAtSomeWaypoint::processAtWaypoint(
     r.sleep();
   }
 
-  RCLCPP_WARN(
-    logger_, "Unable to get external input at wp %i. Moving on.", curr_waypoint_index);
+  RCLCPP_WARN(logger_, "Unable to get external input at wp %i. Moving on.", curr_waypoint_index);
   return false;
 }
 

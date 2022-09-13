@@ -7,7 +7,7 @@
 #include <memory>
 
 #include "rclcpp/rclcpp.hpp"
-#include "std_msgs/msg/empty.hpp"
+#include "std_msgs/msg/bool.hpp"
 #include "rclcpp_lifecycle/lifecycle_node.hpp"
 #include "nav2_core/waypoint_task_executor.hpp"
 
@@ -56,7 +56,7 @@ protected:
    * @brief Processor callback
    * @param msg Empty message
    */
-  void Cb(const std_msgs::msg::Empty::SharedPtr msg);
+  void Cb(const std_msgs::msg::Bool::SharedPtr msg);
 
   bool input_received_;
   bool is_enabled_;
@@ -64,7 +64,7 @@ protected:
   rclcpp::Logger logger_{rclcpp::get_logger("nav2_waypoint_follower")};
   rclcpp::Clock::SharedPtr clock_;
   std::mutex mutex_;
-  rclcpp::Subscription<std_msgs::msg::Empty>::SharedPtr subscription_;
+  rclcpp::Subscription<std_msgs::msg::Bool>::SharedPtr subscription_;
 };
 
 }  // namespace nav2_waypoint_follower
