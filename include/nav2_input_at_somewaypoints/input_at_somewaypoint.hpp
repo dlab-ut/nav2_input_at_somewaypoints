@@ -8,6 +8,7 @@
 
 #include "rclcpp/rclcpp.hpp"
 #include "std_msgs/msg/bool.hpp"
+#include "std_msgs/msg/int16.hpp"
 #include "rclcpp_lifecycle/lifecycle_node.hpp"
 #include "nav2_core/waypoint_task_executor.hpp"
 
@@ -65,6 +66,7 @@ protected:
   rclcpp::Clock::SharedPtr clock_;
   std::mutex mutex_;
   rclcpp::Subscription<std_msgs::msg::Bool>::SharedPtr subscription_;
+  rclcpp::Publisher<std_msgs::msg::Int16>::SharedPtr publisher_;
 };
 
 }  // namespace nav2_waypoint_follower

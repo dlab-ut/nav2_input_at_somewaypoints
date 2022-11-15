@@ -53,6 +53,8 @@ void InputAtSomeWaypoint::initialize(
   RCLCPP_INFO(logger_, "InputAtSomeWaypoint: Subscribing to input topic %s.", input_topic.c_str());
   subscription_ = node->create_subscription<std_msgs::msg::Bool>(
     input_topic, 1, std::bind(&InputAtSomeWaypoint::Cb, this, _1));
+
+  publisher_ = node->create_publisher<std_msgs::msg::Int16>("/waypoint_index", 10);
 }
 
 void InputAtSomeWaypoint::Cb(const std_msgs::msg::Bool::SharedPtr msg)
@@ -75,14 +77,18 @@ bool InputAtSomeWaypoint::processAtWaypoint(
 
   rclcpp::Rate r(50);
   bool input_received = false;
-  // if(true){
+
   if(std::find(index.begin(), index.end(), curr_waypoint_index+1) == index.end()){
       return true;
   }
+  auto msg_index = std_msgs::msg::Int16();
+  msg_index.data = curr_waypoint_index;
   while (true) {
     {
       std::lock_guard<std::mutex> lock(mutex_);
       input_received = input_received_;
+      
+      publisher_->publish(msg_index);
     }
 
     if (input_received) {
