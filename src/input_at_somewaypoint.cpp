@@ -54,7 +54,8 @@ void InputAtSomeWaypoint::initialize(
   subscription_ = node->create_subscription<std_msgs::msg::Bool>(
     input_topic, 1, std::bind(&InputAtSomeWaypoint::Cb, this, _1));
 
-  publisher_ = node->create_publisher<std_msgs::msg::Int16>("/waypoint_index", 10);
+  publisher_ = node->create_publisher<std_msgs::msg::Int16>("/current_waypoint_index", 10);
+  publisher_->on_activate();
 }
 
 void InputAtSomeWaypoint::Cb(const std_msgs::msg::Bool::SharedPtr msg)
@@ -82,13 +83,12 @@ bool InputAtSomeWaypoint::processAtWaypoint(
       return true;
   }
   auto msg_index = std_msgs::msg::Int16();
-  msg_index.data = curr_waypoint_index;
+  msg_index.data = curr_waypoint_index+1;
+  publisher_->publish(msg_index);
   while (true) {
     {
       std::lock_guard<std::mutex> lock(mutex_);
       input_received = input_received_;
-      
-      publisher_->publish(msg_index);
     }
 
     if (input_received) {

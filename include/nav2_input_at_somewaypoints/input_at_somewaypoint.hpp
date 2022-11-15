@@ -66,7 +66,7 @@ protected:
   rclcpp::Clock::SharedPtr clock_;
   std::mutex mutex_;
   rclcpp::Subscription<std_msgs::msg::Bool>::SharedPtr subscription_;
-  rclcpp::Publisher<std_msgs::msg::Int16>::SharedPtr publisher_;
+  rclcpp_lifecycle::LifecyclePublisher<std_msgs::msg::Int16>::SharedPtr publisher_;
 };
 
 }  // namespace nav2_waypoint_follower
