@@ -79,12 +79,13 @@ bool InputAtSomeWaypoint::processAtWaypoint(
   rclcpp::Rate r(50);
   bool input_received = false;
 
-  if(std::find(index.begin(), index.end(), curr_waypoint_index+1) == index.end()){
-      return true;
-  }
   auto msg_index = std_msgs::msg::Int16();
   msg_index.data = curr_waypoint_index+1;
   publisher_->publish(msg_index);
+
+  if(std::find(index.begin(), index.end(), curr_waypoint_index+1) == index.end()){
+      return true;
+  }
   while (true) {
     {
       std::lock_guard<std::mutex> lock(mutex_);
